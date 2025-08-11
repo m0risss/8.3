@@ -58,6 +58,59 @@
       color: #2e7d32;
       font-weight: bold;
     }
+    .quote-slider {
+  position: relative;
+  background: #e0f2f1;
+  border-radius: 10px;
+  padding: 30px 40px;
+  max-width: 600px;
+  margin: 30px auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  font-family: 'Georgia', serif;
+  color: #004d40;
+  text-align: center;
+}
+
+.quote-text {
+  font-size: 1.5rem;
+  font-style: italic;
+  margin-bottom: 15px;
+  min-height: 90px;
+}
+
+.quote-author {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #00695c;
+  margin-bottom: 15px;
+}
+
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  color: #004d40;
+  cursor: pointer;
+  user-select: none;
+  padding: 0 15px;
+  transition: color 0.3s;
+}
+
+#prev-btn {
+  left: 10px;
+}
+
+#next-btn {
+  right: 10px;
+}
+
+.nav-btn:hover {
+  color: #00796b;
+}
+
   </style>
 </head>
 <body>
@@ -66,6 +119,12 @@
   <h1>📚 Klassen-Organisation 2025/26</h1>
   <p>Alle wichtigen Infos, Regeln und Links für unsere Klasse</p>
 </header>
+<section id="quote-slider" class="quote-slider">
+  <div class="quote-text"></div>
+  <div class="quote-author"></div>
+  <button id="prev-btn" class="nav-btn">‹</button>
+  <button id="next-btn" class="nav-btn">›</button>
+</section>
 
 <section>
   <h2> Klassenchat-Regeln</h2>
@@ -111,6 +170,56 @@
 <footer>
   <p>© 2025 8/3 Goats | ~morisss</p>
 </footer>
+<script>
+  const quotes = [
+    {
+      text: "Die tiefsten Wunden sind oft die unsichtbaren.",
+      author: "Unbekannt"
+    },
+    {
+      text: "Nicht weil es schwer ist, wagen wir es nicht, sondern weil wir es nicht wagen, ist es schwer.",
+      author: "Seneca"
+    },
+    {
+      text: "Man entdeckt keine neuen Erdteile, ohne den Mut zu haben, alte Küsten aus den Augen zu verlieren.",
+      author: "André Gide"
+    },
+    {
+      text: "Der Weg ist das Ziel.",
+      author: "Konfuzius"
+    },
+    {
+      text: "Das Leben wird vorwärts gelebt und rückwärts verstanden.",
+      author: "Sören Kierkegaard"
+    }
+  ];
+
+  let currentIndex = 0;
+
+  const quoteText = document.querySelector(".quote-text");
+  const quoteAuthor = document.querySelector(".quote-author");
+  const prevBtn = document.getElementById("prev-btn");
+  const nextBtn = document.getElementById("next-btn");
+
+  function showQuote(index) {
+    const quote = quotes[index];
+    quoteText.textContent = `"${quote.text}"`;
+    quoteAuthor.textContent = `— ${quote.author}`;
+  }
+
+  prevBtn.addEventListener("click", () => {
+    currentIndex = (currentIndex - 1 + quotes.length) % quotes.length;
+    showQuote(currentIndex);
+  });
+
+  nextBtn.addEventListener("click", () => {
+    currentIndex = (currentIndex + 1) % quotes.length;
+    showQuote(currentIndex);
+  });
+
+  // Zeige das erste Zitat beim Laden
+  showQuote(currentIndex);
+</script>
 
 </body>
 </html>
