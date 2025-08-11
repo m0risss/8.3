@@ -135,6 +135,10 @@
     <li>Fragen und Anliegen bitte direkt und konstruktiv ansprechen.</li>
   </ul>
 </section>
+  <section id="countdown-section" style="text-align:center; margin: 40px auto; max-width: 400px; background:#dcedc8; padding: 20px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); font-family: Arial, sans-serif;">
+  <h2>📅 Schulstart in:</h2>
+  <div id="countdown" style="font-size: 2.5rem; font-weight: bold; color: #33691e; margin-top: 10px;"></div>
+</section>
 
 <section>
   <h2> Verhaltensregeln im Unterricht</h2>
@@ -244,6 +248,27 @@
   // Zeige das erste Zitat beim Laden
   showQuote(currentIndex);
 </script>
+<script>
+  function updateCountdown() {
+    const now = new Date();
+    // Nächster 8 Uhr morgens
+    let next8am = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 0, 0);
+    if (now >= next8am) {
+      // Wenn schon nach 8 Uhr heute, dann auf morgen 8 Uhr setzen
+      next8am.setDate(next8am.getDate() + 1);
+    }
 
+    const diffMs = next8am - now;
+    const hours = Math.floor(diffMs / (1000 * 60 * 60));
+    const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+
+    document.getElementById("countdown").textContent =
+      `${hours.toString().padStart(2,'0')} : ${minutes.toString().padStart(2,'0')} : ${seconds.toString().padStart(2,'0')}`;
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
 </body>
 </html>
