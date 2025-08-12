@@ -202,11 +202,6 @@
   <button id="next-btn" class="nav-btn">›</button>
 </section>
   
-<div id="funfact-container" style="max-width: 600px; margin: 20px auto; padding: 15px; background: #f9f9f9; border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,0.1); font-family: Arial, sans-serif; color: #333;">
-  <h3 style="margin-bottom: 10px; color: #2a7a2a;">Täglicher Fun Fact</h3>
-  <p id="funfact-text" style="font-size: 1.1em; line-height: 1.4;"></p>
-  <small id="countdown" style="color: #777; margin-top: 10px; display: block; font-style: italic;"></small>
-</div>
 
 <section>
   <h2> Klassenchat-Regeln</h2>
@@ -548,65 +543,7 @@ document.getElementById("spin-btn").addEventListener("click", () => {
   savePunkte();
 })();
 </script>
-<script>const funFacts = [
-  "Honig verdirbt nie. Archäologen fanden Honig in ägyptischen Gräbern, der noch genießbar war – über 3.000 Jahre alt!",
-  "Oktopusse haben drei Herzen. Zwei pumpen Blut zu den Kiemen, das dritte zum Rest des Körpers – und es stoppt beim Schwimmen.",
-  "Banane ist eine Beere – Erdbeere nicht. Botanisch gesehen gelten Bananen als Beeren, Erdbeeren dagegen nicht.",
-  "Der Eiffelturm kann im Sommer bis zu 15 cm wachsen. Wegen der Hitze dehnt sich das Metall aus.",
-  "Ein Tag auf der Venus ist länger als ein Jahr. Sie braucht 243 Erdtage für eine Umdrehung, aber nur 225 Tage für einen Umlauf um die Sonne.",
-  "Pinguine haben Knie. Sie sind nur unter dem Federkleid verborgen.",
-  "Ziegen haben rechteckige Pupillen. Damit sehen sie ihre Umgebung fast im 360°-Winkel – ideal gegen Raubtiere.",
-  "Wombats machen würfelförmigen Kot. So markieren sie ihr Revier, ohne dass der Kot wegrollt.",
-  "Eine Wolke kann über eine Million Kilo wiegen. Und trotzdem schwebt sie – dank Luftverdrängung.",
-  "Das Herz eines Blauwals ist so groß wie ein Auto. Und seine Adern sind groß genug, dass ein Mensch hindurchkriechen könnte.",
-  "Die längste Pizza der Welt war über 1,9 Kilometer lang. Gebacken in Kalifornien im Jahr 2017.",
-  "In Japan gibt es mehr Haustiere als Kinder. Die Zahl der Haustiere überstieg 2021 die Zahl der Kinder unter 15 Jahren.",
-  "Katzen erkennen die Stimme ihres Besitzers – ignorieren sie aber oft absichtlich.",
-  "In Schottland gibt es offiziell ein Einhorn als Nationaltier.",
-  "Der erste Computer-Virus wurde 1986 geschrieben – und hieß „Brain“.",
-  "Ein einzelner Blitz kann über 30.000 Grad Celsius heiß werden – heißer als die Oberfläche der Sonne.",
-  "Der Geruch von frisch gemähtem Gras ist eigentlich ein „Hilfeschrei“. Es sind chemische Verbindungen, die die Pflanze bei Verletzung freisetzt.",
-  "In der Antarktis gibt es eine Blutrote Wasserquelle – die Blood Falls. Die Farbe kommt von eisenreichem Salzwasser.",
-  "Es gibt eine Insel, auf der Katzen regieren – Aoshima in Japan. Dort gibt es Dutzende Katzen für jeden menschlichen Einwohner.",
-  "Shakespeare erfand viele Wörter. Über 1.700 englische Wörter gehen auf seine Kreativität zurück – z. B. „eyeball“ oder „swagger“."
-];
 
-function updateFunFact() {
-  const now = new Date();
-
-  // Welcher Tag ist heute seit Epoch (1.1.1970)?
-  const dayNumber = Math.floor(now.getTime() / (1000 * 60 * 60 * 24));
-  
-  // Index für FunFact aus der Liste (rotiert)
-  const factIndex = dayNumber % funFacts.length;
-  
-  // Zeige den aktuellen Fun Fact
-  document.getElementById("funfact-text").textContent = funFacts[factIndex];
-  
-  // Nächster Tag Mitternacht berechnen
-  const midnight = new Date(now);
-  midnight.setHours(24,0,0,0); // heute Mitternacht (nächster Tag)
-  
-  // Sekunden bis Mitternacht
-  let diff = Math.floor((midnight.getTime() - now.getTime()) / 1000);
-  
-  // Countdown Formatieren (hh:mm:ss)
-  function formatTime(s) {
-    const h = Math.floor(s / 3600).toString().padStart(2,"0");
-    const m = Math.floor((s % 3600) / 60).toString().padStart(2,"0");
-    const sec = (s % 60).toString().padStart(2,"0");
-    return `${h}:${m}:${sec}`;
-  }
-  
-  // Countdown anzeigen
-  document.getElementById("countdown").textContent = `Nächster Fun Fact in ${formatTime(diff)}`;
-  
-  // Jede Sekunde updaten
-  setTimeout(updateFunFact, 1000);
-}
-
-updateFunFact();
-    </script>
 
 </body>
 </html>
