@@ -246,24 +246,23 @@
   <button id="spin-btn">SPIN! (10💰)</button>
   <p id="slot-result"></p>
 </div>
-<section id="teacher-roulette" style="text-align:center; padding:20px; background:#dcedc8; border-radius:10px; max-width: 600px; margin: 30px auto;">
-  <h2>🎲 Lehrer-Roulette</h2>
-  <p>Wette auf einen Lehrer! Gewinne das 5-fache deines Einsatzes, wenn du richtig liegst.</p>
-  <p>Coins: <span id="roulette-coins">100</span></p>
   
-  <label for="teacher-select">Wähle einen Lehrer:</label><br/>
-  <select id="teacher-select" style="font-size:16px; padding:5px; margin: 10px 0; width: 80%;">
-    <option disabled selected>-- Lehrer auswählen --</option>
-  </select><br/>
+<div id="teacher-roulette" style="margin:20px 0; padding:10px; border:1px solid #ccc; max-width:300px;">
+  <h3>Lehrer Roulette</h3>
 
-  <label for="bet-amount">Einsatz (Coins):</label><br/>
-  <input type="number" id="bet-amount" min="1" step="1" style="font-size:16px; padding:5px; width: 80%;" /><br/><br/>
-  
-  <button id="spin-roulette" style="padding:10px 30px; font-size:16px; background:#2ecc71; color:white; border:none; border-radius:6px; cursor:pointer;">
-    Drehen!
+  <label for="teacherSelect">Lehrer wählen:</label><br>
+  <select id="teacherSelect" style="width:100%; padding:5px; margin-bottom:10px;">
+    <!-- Optionen werden automatisch per Script befüllt -->
+  </select><br>
+
+  <label for="betAmount">Einsatz (Coins):</label><br>
+  <input id="betAmount" type="number" min="1" style="width:100%; padding:5px; margin-bottom:10px;" placeholder="Einsatz eingeben"><br>
+
+  <button onclick="spinRoulette()" style="width:100%; padding:10px; font-weight:bold; cursor:pointer;">
+    Roulette starten
   </button>
-  <p id="roulette-result" style="margin-top: 15px; font-weight: bold;"></p>
-</section>
+</div>
+
 
 
 
@@ -473,85 +472,56 @@ document.getElementById("spin-btn").addEventListener("click", () => {
 });
 
   </script>
-  <script>
-  const teachers = [
-    "Herr Weyer",
-    "Herr Bätz",
-    "Frau Dietrich",
-    "Frau Wiedemann",
-    "Herr Möbius",
-    "Herr Rüger",
-    "Frau Thiede",
-    "Frau Kliebes",
-    "Frau Bodaire",
-    "Herr Petschlies",
-    "Frau Krüger",
-    "Frau Kabus-Friedrich",
-    "Frau Golser",
-    "Herr Vogel",
-    "Frau Möller",
-    "Frau Nowatius",
-    "Frau Wilke"
-  ];
+ <script>
+// ---------------- Lehrer-Liste ----------------
+const lehrer = [
+    "Herr Weyer","Herr Bätz","Frau Dietrich","Frau Wiedemann",
+    "Herr Möbius","Herr Rüger","Frau Thiede","Frau Kliebes",
+    "Frau Bodaire","Herr Petschlies","Frau Krüger","Frau Kabus-Friedrich",
+    "Frau Golser","Herr Vogel","Frau Möller","Frau Nowatius","Frau Wilke"
+];
 
-  const select = document.getElementById("teacher-select");
-  const coinsDisplay = document.getElementById("roulette-coins");
-  const betInput = document.getElementById("bet-amount");
-  const spinBtn = document.getElementById("spin-roulette");
-  const resultDisplay = document.getElementById("roulette-result");
+// ---------------- Dropdown füllen ----------------
+window.addEventListener("DOMContentLoaded", () => {
+    const select = document.getElementById("teacherSelect");
+    lehrer.forEach(name => {
+        const option = document.createElement("option");
+        option.value = name;
+        option.textContent = name;
+        select.appendChild(option);
+    });
+});
 
-  let coins = 100;
+// ---------------- Roulette-Funktion ----------------
+function spinRoulette() {
+    const betAmount = parseInt(document.getElementById("betAmount").value);
+    const chosenTeacher = document.getElementById("teacherSelect").value;
 
-  // Lehrer in Dropdown einfügen
-  teachers.forEach(teacher => {
-    const option = document.createElement("option");
-    option.value = teacher;
-    option.textContent = teacher;
-    select.appendChild(option);
-  });
-
-  spinBtn.addEventListener("click", () => {
-    const bet = parseInt(betInput.value);
-    const chosenTeacher = select.value;
-
-    if (!chosenTeacher) {
-      resultDisplay.textContent = "⚠️ Bitte wähle zuerst einen Lehrer aus.";
-      return;
+    if (isNaN(betAmount) || betAmount <= 0) {
+        alert("Bitte einen gültigen Einsatz eingeben!");
+        return;
     }
-    if (!bet || bet < 1) {
-      resultDisplay.textContent = "⚠️ Bitte gib einen gültigen Einsatz ein.";
-      return;
-    }
-    if (bet > coins) {
-      resultDisplay.textContent = "⚠️ Du hast nicht genug Coins für diesen Einsatz.";
-      return;
+    if (betAmount > coins) {
+        alert("Nicht genug Coins!");
+        return;
     }
 
-    // Coins abziehen
-    coins -= bet;
+    // Zufälligen Lehrer "ziehen"
+    const randomTeacher = lehrer[Math.floor(Math.random() * lehrer.length)];
 
-    // Zufälligen Gewinner wählen
-    const winner = teachers[Math.floor(Math.random() * teachers.length)];
+    // Gewinn-Bedingung
+    if (randomTeacher === chosenTeacher) {
+        coins += betAmount * 5; // Gewinnmultiplikator
+        alert(`🎉 Jackpot! ${randomTeacher} wurde gewählt. Du gewinnst ${betAmount * 5} Coins!`);
+    } else {
+        coins -= betAmount;
+        alert(`😢 Leider verloren! Es wurde ${randomTeacher} gezogen.`);
+    }
 
-    // Ergebnis anzeigen mit Animation (optional)
-    resultDisplay.textContent = `Das Rad dreht sich... 🎡`;
-
-    setTimeout(() => {
-      if (chosenTeacher === winner) {
-        const winAmount = bet * 5;
-        coins += winAmount;
-        resultDisplay.textContent = `🎉 Du hast gewonnen! Gewinner: ${winner}. Gewinn: ${winAmount} Coins!`;
-      } else {
-        resultDisplay.textContent = `❌ Leider verloren. Gewinner: ${winner}. Versuch's nochmal!`;
-      }
-      coinsDisplay.textContent = coins;
-
-      if (coins <= 0) {
-        resultDisplay.textContent += " 💀 Game Over – keine Coins mehr.";
-        spinBtn.disabled = true;
-      }
-    }, 1500); // 1,5 Sekunden Verzögerung für Spannung
-  });
+    // Coins-Stand aktualisieren (gleiche Anzeige wie Slotmachine)
+    document.getElementById("coinCount").textContent = coins;
+}
 </script>
+
 </body>
 </html>
