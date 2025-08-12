@@ -254,7 +254,12 @@
   <button id="prev-btn" class="nav-btn">‹</button>
   <button id="next-btn" class="nav-btn">›</button>
 </section>
-  
+  <div id="weather-widget" style="background:#f5f5f5;padding:15px;border-radius:10px;max-width:250px;text-align:center;">
+    <h3>🌤 Wetter in Leipzig</h3>
+    <p id="weather-temp" style="font-size:20px;font-weight:bold;">Lade...</p>
+    <p id="weather-desc"></p>
+    <p id="weather-feels"></p>
+</div>
 
 <section>
   <h2> Klassenchat-Regeln</h2>
@@ -612,7 +617,29 @@ document.getElementById("spin-btn").addEventListener("click", () => {
   savePunkte();
 })();
 </script>
+<script>
+    async function loadWeather() {
+        try {
+            let response = await fetch("https://wttr.in/Leipzig?format=j1");
+            let data = await response.json();
 
+            // Aktuelles Wetter
+            let current = data.current_condition[0];
+            let temp = current.temp_C;
+            let desc = current.weatherDesc[0].value;
+            let feels = current.FeelsLikeC;
+
+            document.getElementById("weather-temp").textContent = temp + "°C";
+            document.getElementById("weather-desc").textContent = desc;
+            document.getElementById("weather-feels").textContent = "Gefühlt: " + feels + "°C";
+        } catch (error) {
+            document.getElementById("weather-temp").textContent = "Fehler beim Laden";
+            console.error(error);
+        }
+    }
+
+    loadWeather();
+</script>
 
 </body>
 </html>
