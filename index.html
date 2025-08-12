@@ -265,86 +265,7 @@
   <p id="roulette-result" style="margin-top: 15px; font-weight: bold;"></p>
 </section>
 
-<script>
-  const teachers = [
-    "Herr Weyer",
-    "Herr Bätz",
-    "Frau Dietrich",
-    "Frau Wiedemann",
-    "Herr Möbius",
-    "Herr Rüger",
-    "Frau Thiede",
-    "Frau Kliebes",
-    "Frau Bodaire",
-    "Herr Petschlies",
-    "Frau Krüger",
-    "Frau Kabus-Friedrich",
-    "Frau Golser",
-    "Herr Vogel",
-    "Frau Möller",
-    "Frau Nowatius",
-    "Frau Wilke"
-  ];
 
-  const select = document.getElementById("teacher-select");
-  const coinsDisplay = document.getElementById("roulette-coins");
-  const betInput = document.getElementById("bet-amount");
-  const spinBtn = document.getElementById("spin-roulette");
-  const resultDisplay = document.getElementById("roulette-result");
-
-  let coins = 100;
-
-  // Lehrer in Dropdown einfügen
-  teachers.forEach(teacher => {
-    const option = document.createElement("option");
-    option.value = teacher;
-    option.textContent = teacher;
-    select.appendChild(option);
-  });
-
-  spinBtn.addEventListener("click", () => {
-    const bet = parseInt(betInput.value);
-    const chosenTeacher = select.value;
-
-    if (!chosenTeacher) {
-      resultDisplay.textContent = "⚠️ Bitte wähle zuerst einen Lehrer aus.";
-      return;
-    }
-    if (!bet || bet < 1) {
-      resultDisplay.textContent = "⚠️ Bitte gib einen gültigen Einsatz ein.";
-      return;
-    }
-    if (bet > coins) {
-      resultDisplay.textContent = "⚠️ Du hast nicht genug Coins für diesen Einsatz.";
-      return;
-    }
-
-    // Coins abziehen
-    coins -= bet;
-
-    // Zufälligen Gewinner wählen
-    const winner = teachers[Math.floor(Math.random() * teachers.length)];
-
-    // Ergebnis anzeigen mit Animation (optional)
-    resultDisplay.textContent = `Das Rad dreht sich... 🎡`;
-
-    setTimeout(() => {
-      if (chosenTeacher === winner) {
-        const winAmount = bet * 5;
-        coins += winAmount;
-        resultDisplay.textContent = `🎉 Du hast gewonnen! Gewinner: ${winner}. Gewinn: ${winAmount} Coins!`;
-      } else {
-        resultDisplay.textContent = `❌ Leider verloren. Gewinner: ${winner}. Versuch's nochmal!`;
-      }
-      coinsDisplay.textContent = coins;
-
-      if (coins <= 0) {
-        resultDisplay.textContent += " 💀 Game Over – keine Coins mehr.";
-        spinBtn.disabled = true;
-      }
-    }, 1500); // 1,5 Sekunden Verzögerung für Spannung
-  });
-</script>
 
 <section>
   <h2> Kontakt & Ansprechpartner</h2>
@@ -552,5 +473,85 @@ document.getElementById("spin-btn").addEventListener("click", () => {
 });
 
   </script>
+  <script>
+  const teachers = [
+    "Herr Weyer",
+    "Herr Bätz",
+    "Frau Dietrich",
+    "Frau Wiedemann",
+    "Herr Möbius",
+    "Herr Rüger",
+    "Frau Thiede",
+    "Frau Kliebes",
+    "Frau Bodaire",
+    "Herr Petschlies",
+    "Frau Krüger",
+    "Frau Kabus-Friedrich",
+    "Frau Golser",
+    "Herr Vogel",
+    "Frau Möller",
+    "Frau Nowatius",
+    "Frau Wilke"
+  ];
+
+  const select = document.getElementById("teacher-select");
+  const coinsDisplay = document.getElementById("roulette-coins");
+  const betInput = document.getElementById("bet-amount");
+  const spinBtn = document.getElementById("spin-roulette");
+  const resultDisplay = document.getElementById("roulette-result");
+
+  let coins = 100;
+
+  // Lehrer in Dropdown einfügen
+  teachers.forEach(teacher => {
+    const option = document.createElement("option");
+    option.value = teacher;
+    option.textContent = teacher;
+    select.appendChild(option);
+  });
+
+  spinBtn.addEventListener("click", () => {
+    const bet = parseInt(betInput.value);
+    const chosenTeacher = select.value;
+
+    if (!chosenTeacher) {
+      resultDisplay.textContent = "⚠️ Bitte wähle zuerst einen Lehrer aus.";
+      return;
+    }
+    if (!bet || bet < 1) {
+      resultDisplay.textContent = "⚠️ Bitte gib einen gültigen Einsatz ein.";
+      return;
+    }
+    if (bet > coins) {
+      resultDisplay.textContent = "⚠️ Du hast nicht genug Coins für diesen Einsatz.";
+      return;
+    }
+
+    // Coins abziehen
+    coins -= bet;
+
+    // Zufälligen Gewinner wählen
+    const winner = teachers[Math.floor(Math.random() * teachers.length)];
+
+    // Ergebnis anzeigen mit Animation (optional)
+    resultDisplay.textContent = `Das Rad dreht sich... 🎡`;
+
+    setTimeout(() => {
+      if (chosenTeacher === winner) {
+        const winAmount = bet * 5;
+        coins += winAmount;
+        resultDisplay.textContent = `🎉 Du hast gewonnen! Gewinner: ${winner}. Gewinn: ${winAmount} Coins!`;
+      } else {
+        resultDisplay.textContent = `❌ Leider verloren. Gewinner: ${winner}. Versuch's nochmal!`;
+      }
+      coinsDisplay.textContent = coins;
+
+      if (coins <= 0) {
+        resultDisplay.textContent += " 💀 Game Over – keine Coins mehr.";
+        spinBtn.disabled = true;
+      }
+    }, 1500); // 1,5 Sekunden Verzögerung für Spannung
+  });
+</script>
 </body>
 </html>
