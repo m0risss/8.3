@@ -154,6 +154,35 @@
 .green {
   background-color: #2ecc71 !important;
 }
+#slot-machine {
+  text-align: center;
+  padding: 20px;
+}
+
+#reels {
+  font-size: 50px;
+  margin: 20px 0;
+}
+
+.reel {
+  display: inline-block;
+  width: 60px;
+}
+
+#spin-btn {
+  padding: 15px 30px;
+  font-size: 18px;
+  background-color: #f39c12;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#spin-btn:hover {
+  background-color: #d35400;
+}
 
   </style>
 </head>
@@ -206,6 +235,17 @@
     <li><a href="https://www.youtube.com/@lehrerschmidt" target="_blank">Falls ihr keine Ahnung habt oder so idk</a></li>
   </ul>
 </section>
+<div id="slot-machine">
+  <h2>🎰 Slot Machine</h2>
+  <p>💰 Coins: <span id="coins">100</span></p>
+  <div id="reels">
+    <span class="reel">🍒</span>
+    <span class="reel">🍋</span>
+    <span class="reel">🍇</span>
+  </div>
+  <button id="spin-btn">SPIN! (10💰)</button>
+  <p id="slot-result"></p>
+</div>
 
 <section>
   <h2> Kontakt & Ansprechpartner</h2>
@@ -346,5 +386,49 @@ document.body.addEventListener("click", function() {
   }
 });
  </script>
+  <script>
+  const symbols = ["🍒", "🍋", "🍇", "🍉", "⭐", "🔔", "💎", "7️⃣"];
+const reels = document.querySelectorAll(".reel");
+const resultText = document.getElementById("slot-result");
+const coinsDisplay = document.getElementById("coins");
+
+let coins = 100;
+const betAmount = 10;
+
+document.getElementById("spin-btn").addEventListener("click", () => {
+  if (coins < betAmount) {
+    resultText.textContent = "💀 Game Over – Keine Coins mehr!";
+    return;
+  }
+
+  coins -= betAmount;
+  let results = [];
+
+  reels.forEach(reel => {
+    let randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+    reel.textContent = randomSymbol;
+    results.push(randomSymbol);
+  });
+
+  // Gewinnlogik
+  if (results[0] === "7️⃣" && results[1] === "7️⃣" && results[2] === "7️⃣") {
+    coins += 100;
+    resultText.textContent = "🎉 JACKPOT! 7️⃣7️⃣7️⃣ +100💰!";
+  } 
+  else if (results[0] === results[1] && results[1] === results[2]) {
+    coins += 50;
+    resultText.textContent = "✨ Drei gleiche! +50💰";
+  } 
+  else if (results[0] === results[1] || results[1] === results[2] || results[0] === results[2]) {
+    coins += 20;
+    resultText.textContent = "🙂 Zwei gleiche – +20💰";
+  } 
+  else {
+    resultText.textContent = "😢 Leider nix – Versuch's nochmal!";
+  }
+
+  coinsDisplay.textContent = coins;
+});
+  </script)
 </body>
 </html>
