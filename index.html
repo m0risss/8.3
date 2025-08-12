@@ -266,6 +266,73 @@
     margin: 4px 0;
     color: #555;
 }
+.game-section {
+  background-color: #f0f0f0; /* hellgrau */
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 400px;
+  margin: 20px auto;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.game-section h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #2a7ae2; /* ein frisches Blau, kannst du anpassen */
+}
+
+.word-container {
+  font-size: 2rem;
+  text-align: center;
+  margin: 15px 0;
+  font-weight: bold;
+  letter-spacing: 3px;
+  color: #555;
+  user-select: none;
+}
+
+#user-input {
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+  border: 1.5px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+button {
+  cursor: pointer;
+  background-color: #2a7ae2;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-size: 1rem;
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #1e5bb8;
+}
+
+.info {
+  margin-top: 10px;
+  font-size: 1rem;
+  text-align: center;
+  color: #444;
+}
+
+#message {
+  margin-top: 15px;
+  min-height: 24px;
+  text-align: center;
+  font-weight: 600;
+  color: #e03e3e;
+}
 
   </style>
 </head>
@@ -347,6 +414,27 @@
   </div>
   <p id="ssp-status" style="min-height: 20px;"></p>
 </div>
+  <section id="unscramble-game" class="game-section">
+  <h2>Wort Unscramble</h2>
+  <p>Entschlüssele so viele Wörter wie möglich in 60 Sekunden!</p>
+
+  <div class="word-container">
+    <span id="scrambled-word">--</span>
+  </div>
+
+  <input type="text" id="user-input" placeholder="Hier Wort eingeben" autocomplete="off" />
+
+  <button id="submit-word">Prüfen</button>
+  <button id="start-game">Spiel Starten</button>
+
+  <div class="info">
+    <span>Zeit: <span id="timer">60</span> Sekunden</span> |
+    <span>Punkte: <span id="score">0</span></span>
+  </div>
+
+  <div id="message"></div>
+</section>
+
 <div class="tab clash-tab">
   <h2>Clash Royale</h2>
   <div class="screenshots-container">
@@ -668,6 +756,160 @@ document.getElementById("spin-btn").addEventListener("click", () => {
 
     loadWeather();
 </script>
+<script>
+(() => {
+  const words = [
+  "apfel", "haus", "auto", "baum", "stuhl", "tisch", "wasser", "blume", "sonne", "mond",
+  "katze", "hund", "vogel", "fisch", "regen", "wolke", "stern", "feuer", "erde", "berge",
+  "schule", "freund", "spiel", "musik", "farbe", "licht", "kuchen", "garten", "tür", "fenster",
+  "brille", "straße", "boot", "insel", "meer", "nacht", "tag", "zeit", "blatt", "glas",
+  "herz", "zahn", "radio", "maus", "kind", "mutter", "vater", "luft", "wind", "salz",
+  "pferd", "biene", "feder", "pilz", "ball", "tasse", "kerze", "buch", "film", "brot",
+  "kaffee", "bier", "ofen", "socke", "jacke", "uhr", "reise", "zelt", "korb", "turm",
+  "rose", "hase", "fee", "wolf", "rabe", "dach", "zaun", "lied", "flut", "netz",
+  "rat", "see", "gans", "fuchs", "loft", "fluss", "berg", "tor", "weg", "kamm",
+  "keks", "topf", "hut", "mütze", "stock", "ring", "hand", "fuß", "kopf", "holz",
+  "feld", "beer", "eis", "gras", "stein", "sand", "staub", "kalt", "warm", "hoch",
+  "tief", "lang", "kurz", "rot", "blau", "grün", "gelb", "weiß", "schwarz", "braun",
+  "bein", "arm", "bauch", "rücken", "auge", "ohr", "mund", "nase", "zunge", "finger",
+  "zeh", "wurzel", "ast", "blüte", "samen", "tal", "wald", "holz", "stein", "saat",
+  "korn", "netz", "hut", "feuer", "wasser", "luft", "erde", "stahl", "glas", "kerze",
+  "blatt", "zweig", "zweig", "himmel", "wolke", "regen", "schnee", "wind", "sonne",
+  "mond", "stern", "nacht", "tag", "zeit", "uhr", "jahr", "monat", "woche", "tag",
+  "kind", "mann", "frau", "freund", "feind", "hilfe", "spiel", "lied", "tanz", "film",
+  "buch", "bild", "raum", "stadt", "dorf", "haus", "zimmer", "tür", "fenster", "bett",
+  "stuhl", "tisch", "lampe", "teppich", "boden", "decke", "wand", "telefon", "radio",
+  "fernseher", "computer", "kamera", "auto", "bus", "bahn", "flughafen", "schiff", "boot",
+  "insel", "berg", "tal", "fluss", "see", "meer", "strand", "wald", "baum", "pflanze",
+  "blume", "gras", "kraut", "pilz", "tier", "hund", "katze", "vogel", "fisch", "ameise",
+  "biene", "käfer", "schmetterling", "wurm", "spinne", "maus", "ratte", "bär", "löwe",
+  "tiger", "elefant", "affe", "pferd", "kuh", "schaf", "ziege", "schwein", "huhn",
+  "ente", "gans", "taube", "rabe", "falke", "eule", "kranich", "pinguin", "krokodil",
+  "schlange", "frosch", "kröte", "echse", "kaulquappe", "kakerlake", "fliege", "mücke",
+  "spatz", "rotschwanz", "schwan", "drossel", "meise", "amsel", "fink", "specht",
+  "schnecke", "krabbe", "qualle", "seestern", "muschel", "perle", "koralle", "alge",
+  "seegras", "strandgut", "sandkorn", "felsen", "höhle", "bergspitze", "gipfel", "talgrund",
+  "wiese", "feld", "acker", "garten", "park", "allee", "weg", "straße", "platz", "brücke",
+  "turm", "kirche", "schloss", "burg", "ruine", "festung", "denkmal", "museum", "theater",
+  "kino", "konzert", "messe", "markt", "laden", "geschäft", "büro", "werkstatt", "fabrik",
+  "lager", "garage", "parkplatz", "schule", "universität", "bibliothek", "schule",
+  "kindergarten", "krankenhaus", "arzt", "apotheke", "polizei", "feuerwehr", "post",
+  "bank", "hotel", "restaurant", "café", "bar", "kneipe", "club", "diskothek", "sport",
+  "fußball", "basketball", "tennis", "volleyball", "badminton", "schwimmen", "laufen",
+  "radfahren", "turnen", "reiten", "ski", "snowboard", "klettern", "wandern", "jagen",
+  "angeln", "segeln", "surfen", "tauchen", "reiten", "boxen", "ringen", "kampf", "spiel",
+  "karte", "würfel", "puzzle", "spielzeug", "computer", "tablet", "handy", "telefon",
+  "kamera", "drucker", "scanner", "kopierer", "lampe", "glühbirne", "kerze", "fackel",
+  "feuerzeug", "streichholz", "kerze", "kerzenhalter", "tisch", "stuhl", "sofa",
+  "bett", "schrank", "kommode", "regal", "tischlampe", "uhr", "bild", "spiegel",
+  "vorhang", "teppich", "boden", "fliese", "parkett", "teppichboden", "farbe", "tapete",
+  "pinsel", "rolle", "farbeimer", "leiter", "werkzeug", "hammer", "schraube", "nagel",
+  "schraubenzieher", "zange", "säge", "bohrer", "schleifer", "schraubenschlüssel",
+  "maßband", "wasserwaage", "lineal", "winkel", "maßstab", "computer", "programm",
+  "software", "hardware", "internet", "webseite", "seite", "text", "bild", "video",
+  "audio", "musik", "film", "buch", "zeitung", "magazin", "brief", "karte", "paket",
+  "geschenk", "koffer", "tasche", "rucksack", "kappe", "mütze", "hut", "jacke",
+  "hose", "rock", "kleid", "shirt", "bluse", "pullover", "mantel", "schuhe", "socken",
+  "handschuhe", "schal", "gürtel", "tasche", "brille", "uhr", "kette", "ring", "ohrring",
+  "armband", "ring", "schmuck", "kosmetik", "makeup", "parfum", "seife", "shampoo",
+  "zahnbürste", "zahnpasta", "kamm", "bürste", "rasierer", "handtuch", "decke", "kissen",
+  "bettwäsche", "vorhang", "lampe", "kerze", "fenster", "tür", "schloss", "griff",
+  "schlüssel", "schalter", "steckdose", "kabel", "lampe", "ventilator", "heizung",
+  "kühlschrank", "ofen", "mikrowelle", "geschirrspüler", "waschmaschine", "trockner",
+  "staubsauger", "bügeleisen", "radio", "fernseher", "lautsprecher", "kopfhörer",
+  "computer", "tablet", "handy", "kamera", "drucker", "scanner", "kopierer"
+];
 
+
+  let scrambledWord = "";
+  let currentWord = "";
+  let score = 0;
+  let timeLeft = 60;
+  let timerInterval = null;
+
+  const scrambledWordEl = document.getElementById("scrambled-word");
+  const userInput = document.getElementById("user-input");
+  const submitBtn = document.getElementById("submit-word");
+  const startBtn = document.getElementById("start-game");
+  const timerEl = document.getElementById("timer");
+  const scoreEl = document.getElementById("score");
+  const messageEl = document.getElementById("message");
+
+  function shuffleWord(word) {
+    const arr = word.split('');
+    for (let i = arr.length -1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr.join('');
+  }
+
+  function newWord() {
+    currentWord = words[Math.floor(Math.random() * words.length)];
+    scrambledWord = shuffleWord(currentWord);
+    // Falls zufällig gleiches Wort rauskommt, nochmal shuffeln:
+    while (scrambledWord === currentWord) {
+      scrambledWord = shuffleWord(currentWord);
+    }
+    scrambledWordEl.textContent = scrambledWord;
+  }
+
+  function startGame() {
+    score = 0;
+    timeLeft = 60;
+    scoreEl.textContent = score;
+    timerEl.textContent = timeLeft;
+    messageEl.textContent = "";
+    userInput.value = "";
+    userInput.disabled = false;
+    submitBtn.disabled = false;
+    startBtn.disabled = true;
+    newWord();
+    userInput.focus();
+
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      timerEl.textContent = timeLeft;
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        endGame();
+      }
+    }, 1000);
+  }
+
+  function checkWord() {
+    const answer = userInput.value.trim().toLowerCase();
+    if (answer === currentWord) {
+      score++;
+      scoreEl.textContent = score;
+      messageEl.style.color = "green";
+      messageEl.textContent = "Richtig!";
+      newWord();
+      userInput.value = "";
+    } else {
+      messageEl.style.color = "#e03e3e";
+      messageEl.textContent = "Falsch, versuch's nochmal.";
+    }
+  }
+
+  function endGame() {
+    userInput.disabled = true;
+    submitBtn.disabled = true;
+    startBtn.disabled = false;
+    messageEl.style.color = "#2a7ae2";
+    messageEl.textContent = `Zeit vorbei! Dein Score: ${score}`;
+  }
+
+  submitBtn.addEventListener("click", checkWord);
+
+  userInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      checkWord();
+    }
+  });
+
+  startBtn.addEventListener("click", startGame);
+})();
+</script>
 </body>
 </html>
