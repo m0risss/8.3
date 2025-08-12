@@ -183,62 +183,6 @@
 #spin-btn:hover {
   background-color: #d35400;
 }
-/* Roulette Container */
-#roulette {
-    background-color: white; /* hebt sich vom hellgrauen Hintergrund ab */
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    padding: 20px;
-    max-width: 400px;
-    margin: 20px auto;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    text-align: center;
-}
-
-/* Überschrift */
-#roulette h2 {
-    color: #333;
-    margin-bottom: 15px;
-}
-
-/* Auswahlfeld */
-#teacherSelect {
-    padding: 8px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #bbb;
-    margin-bottom: 15px;
-}
-
-/* Spin Button */
-#spinRoulette {
-    background-color: #4CAF50; /* angenehmes Grün */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-#spinRoulette:hover {
-    background-color: #45a049;
-}
-
-/* Ergebnisanzeige */
-#rouletteResult {
-    margin-top: 15px;
-    font-size: 18px;
-    color: #444;
-}
-
-/* Coins Anzeige */
-#coinDisplay {
-    font-weight: bold;
-    color: #222;
-    margin-top: 10px;
-}
 
   </style>
 </head>
@@ -303,21 +247,7 @@
   <p id="slot-result"></p>
 </div>
   
-<div id="teacher-roulette" style="margin:20px 0; padding:10px; border:1px solid #ccc; max-width:300px;">
-  <h3>Lehrer Roulette</h3>
 
-  <label for="teacherSelect">Lehrer wählen:</label><br>
-  <select id="teacherSelect" style="width:100%; padding:5px; margin-bottom:10px;">
-    <!-- Optionen werden automatisch per Script befüllt -->
-  </select><br>
-
-  <label for="betAmount">Einsatz (Coins):</label><br>
-  <input id="betAmount" type="number" min="1" style="width:100%; padding:5px; margin-bottom:10px;" placeholder="Einsatz eingeben"><br>
-
-  <button onclick="spinRoulette()" style="width:100%; padding:10px; font-weight:bold; cursor:pointer;">
-    Roulette starten
-  </button>
-</div>
 
 
 
@@ -528,56 +458,7 @@ document.getElementById("spin-btn").addEventListener("click", () => {
 });
 
   </script>
- <script>
-// ---------------- Lehrer-Liste ----------------
-const lehrer = [
-    "Herr Weyer","Herr Bätz","Frau Dietrich","Frau Wiedemann",
-    "Herr Möbius","Herr Rüger","Frau Thiede","Frau Kliebes",
-    "Frau Bodaire","Herr Petschlies","Frau Krüger","Frau Kabus-Friedrich",
-    "Frau Golser","Herr Vogel","Frau Möller","Frau Nowatius","Frau Wilke"
-];
-
-// ---------------- Dropdown füllen ----------------
-window.addEventListener("DOMContentLoaded", () => {
-    const select = document.getElementById("teacherSelect");
-    lehrer.forEach(name => {
-        const option = document.createElement("option");
-        option.value = name;
-        option.textContent = name;
-        select.appendChild(option);
-    });
-});
-
-// ---------------- Roulette-Funktion ----------------
-function spinRoulette() {
-    const betAmount = parseInt(document.getElementById("betAmount").value);
-    const chosenTeacher = document.getElementById("teacherSelect").value;
-
-    if (isNaN(betAmount) || betAmount <= 0) {
-        alert("Bitte einen gültigen Einsatz eingeben!");
-        return;
-    }
-    if (betAmount > coins) {
-        alert("Nicht genug Coins!");
-        return;
-    }
-
-    // Zufälligen Lehrer "ziehen"
-    const randomTeacher = lehrer[Math.floor(Math.random() * lehrer.length)];
-
-    // Gewinn-Bedingung
-    if (randomTeacher === chosenTeacher) {
-        coins += betAmount * 5; // Gewinnmultiplikator
-        alert(`🎉 Jackpot! ${randomTeacher} wurde gewählt. Du gewinnst ${betAmount * 5} Coins!`);
-    } else {
-        coins -= betAmount;
-        alert(`😢 Leider verloren! Es wurde ${randomTeacher} gezogen.`);
-    }
-
-    // Coins-Stand aktualisieren (gleiche Anzeige wie Slotmachine)
-    document.getElementById("coinCount").textContent = coins;
-}
-</script>
+ 
 
 </body>
 </html>
