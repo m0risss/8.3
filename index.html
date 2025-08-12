@@ -247,7 +247,18 @@
   <button id="spin-btn">SPIN! (10💰)</button>
   <p id="slot-result"></p>
 </div>
-
+<div id="ssp-game" style="font-family: Arial, sans-serif; max-width: 350px; margin: 20px auto; padding: 15px; border: 2px solid #0f0; border-radius: 8px; background: #111; color: #0f0;">
+  <h3 style="text-align: center;">🎯 Schere – Stein – Papier</h3>
+  <p>Punkte: <span id="ssp-punkte">0</span></p>
+  <label for="ssp-einsatz">Einsatz:</label>
+  <input type="number" id="ssp-einsatz" value="10" min="1" style="width: 60px;">
+  <div style="margin: 15px 0;">
+    <button data-choice="schere" class="ssp-btn">✌ Schere</button>
+    <button data-choice="stein" class="ssp-btn">✊ Stein</button>
+    <button data-choice="papier" class="ssp-btn">✋ Papier</button>
+  </div>
+  <p id="ssp-status" style="min-height: 20px;"></p>
+</div>
 
 
 
@@ -460,7 +471,76 @@ document.getElementById("spin-btn").addEventListener("click", () => {
 });
 
   </script>
-
+<script>
+(function(){
+  const punkteKey = 'sspPunkte';
+  let punkte = parseInt(localStorage.getItem(punkteKey)) || 100;
+  const punkteSpan = document.getElementById('ssp-punkte');
+  const status = document.getElementById('ssp-status');
+  const einsatzInput = document.getElementById('ssp-einsatz');
+  const btns = document.querySelectorAll('.ssp-btn');
+  
+  const wahlMoeglichkeiten = ['schere', 'stein', 'papier'];
+  
+  function savePunkte(){
+    localStorage.setItem(punkteKey, punkte);
+    punkteSpan.textContent = punkte;
+  }
+  
+  function computerWahl(){
+    return wahlMoeglichkeiten[Math.floor(Math.random() * wahlMoeglichkeiten.length)];
+  }
+  
+  function ergebnis(user, comp){
+    if (user === comp) return 'unentschieden';
+    if (
+      (user === 'schere' && comp === 'papier') ||
+      (user === 'stein' && comp === 'schere') ||
+      (user === 'papier' && comp === 'stein')
+    ) return 'gewonnen';
+    return 'verloren';
+  }
+  
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const einsatz = parseInt(einsatzInput.value);
+      if (isNaN(einsatz) || einsatz <= 0) {
+        alert('Bitte einen gültigen Einsatz eingeben.');
+        return;
+      }
+      if (einsatz > punkte) {
+        alert('Nicht genug Punkte!');
+        return;
+      }
+      
+      status.textContent = 'Computer wählt... 🎲';
+      
+      setTimeout(() => {
+        const userChoice = btn.dataset.choice;
+        const compChoice = computerWahl();
+        const result = ergebnis(userChoice, compChoice);
+        
+        if (result === 'gewonnen') {
+          punkte += einsatz;
+          status.style.color = '#0f0';
+          status.textContent = `✅ Du hast gewonnen! (Du: ${userChoice} | PC: ${compChoice}) +${einsatz}`;
+        } else if (result === 'verloren') {
+          punkte -= einsatz;
+          status.style.color = '#f00';
+          status.textContent = `❌ Verloren! (Du: ${userChoice} | PC: ${compChoice}) -${einsatz}`;
+        } else {
+          status.style.color = '#ff0';
+          status.textContent = `🤝 Unentschieden! (Du: ${userChoice} | PC: ${compChoice})`;
+        }
+        
+        savePunkte();
+      }, 700);
+    });
+  });
+  
+  savePunkte();
+})();
+</script>
 
 
 </body>
