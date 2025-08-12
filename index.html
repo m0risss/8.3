@@ -110,13 +110,35 @@
 .nav-btn:hover {
   color: #00796b;
 }
+#animated-title {
+  font-family: 'Courier New', monospace;
+  font-size: 2.5em;
+  color: #2ecc71; /* Grün-Ton */
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: .15em solid #2ecc71;
+  animation: typing 3s steps(30, end), blink-caret .7s step-end infinite;
+}
+
+/* Schreib-Animation */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+/* Blinkender Cursor */
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: #2ecc71 }
+}
 
   </style>
 </head>
 <body>
 
 <header>
-  <h1>📚 Klassen-Organisation 2025/26</h1>
+  <h1 id="animated-title">Klassen-Organisation 8/3</h1>
+  
   <p>Alle wichtigen Infos, Regeln und Links für unsere Klasse 8/3</p>
 </header>
 <section id="quote-slider" class="quote-slider">
