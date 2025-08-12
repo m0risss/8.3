@@ -185,7 +185,60 @@
   background-color: #d35400;
 }
 
+.clash-tab {
+    background-color: #f5f5f5; /* hellgrau passend zum rest */
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 900px;
+    margin: 20px auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+  }
 
+  .clash-tab h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #1a73e8;
+  }
+
+  .screenshots-container {
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .screenshot-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    width: 280px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.25s ease;
+  }
+
+  .screenshot-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.18);
+  }
+
+  .screenshot-image {
+    border-radius: 8px;
+    width: 280px;
+    height: 180px;
+    object-fit: cover;
+    margin-bottom: 12px;
+  }
+
+  .screenshot-card p {
+    font-size: 0.95rem;
+    text-align: center;
+    color: #555;
+    margin: 0;
+  }
   </style>
 </head>
 <body>
@@ -261,7 +314,23 @@
   </div>
   <p id="ssp-status" style="min-height: 20px;"></p>
 </div>
-
+<div class="tab clash-tab">
+  <h2>Clash Royale</h2>
+  <div class="screenshots-container">
+    <div class="screenshot-card">
+      <img src="WhatsApp Bild 2025-08-12 um 19.59.31_b1d96e32.jpg" alt="King Tower Activation" class="screenshot-image" />
+      <p>Top 3 King Tower Activation</p>
+    </div>
+    <div class="screenshot-card">
+      <img src="WhatsApp Bild 2025-08-12 um 19.59.32_2ed1b1ab.jpg" alt="Eierkuchen" class="screenshot-image" />
+      <p>LECKER PANCAKES</p>
+    </div>
+    <div class="screenshot-card">
+      <img src="WhatsApp Bild 2025-08-12 um 20.00.15_4eb57661.jpg" class="screenshot-image" />
+      <p>Bestes Lowladder Deck</p>
+    </div>
+  </div>
+</div>
 
 
 
