@@ -6,6 +6,27 @@
   <title>Klassen-Organisationsseite</title>
   <style>
     body {
+  margin: 0;
+  background: linear-gradient(
+    270deg,
+    red,
+    orange,
+    yellow,
+    green,
+    cyan,
+    blue,
+    violet,
+    red
+  );
+  background-size: 1400% 1400%;
+  animation: rainbowFlow 10s linear infinite;
+}
+
+@keyframes rainbowFlow {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+    {
       font-family: Arial, sans-serif;
       background-color: #f5f9f7;
       color: #333;
