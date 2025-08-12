@@ -183,6 +183,60 @@
 #spin-btn:hover {
   background-color: #d35400;
 }
+/* Umfrage Container */
+#class-poll {
+  background-color: white;
+  padding: 15px 20px;
+  margin: 20px 0;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+/* Umfrage Buttons */
+.poll-option {
+  display: block;
+  width: 100%;
+  margin: 8px 0;
+  padding: 10px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.poll-option:hover {
+  background-color: #388e3c;
+}
+
+/* Ergebnis-Balken */
+.poll-result {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0;
+}
+
+.poll-bar {
+  flex: 1;
+  height: 20px;
+  background-color: #c8e6c9;
+  border-radius: 4px;
+  position: relative;
+}
+
+.poll-bar::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  background-color: #4caf50;
+  border-radius: 4px;
+  width: 0%;
+  transition: width 0.5s ease;
+}
 
   </style>
 </head>
@@ -246,7 +300,24 @@
   <button id="spin-btn">SPIN! (10💰)</button>
   <p id="slot-result"></p>
 </div>
+  <section id="class-poll">
+  <h2>🗳 Klassen-Umfrage</h2>
+  <p id="poll-question">Was wollen wir am nächsten Wandertag machen?</p>
   
+  <div id="poll-options">
+    <button class="poll-option" onclick="vote(0)">🎢 Freizeitpark</button>
+    <button class="poll-option" onclick="vote(1)">🏞 Wandern</button>
+    <button class="poll-option" onclick="vote(2)">🏊 Schwimmen</button>
+  </div>
+
+  <div id="poll-results" style="display:none; margin-top:15px;">
+    <h3>Ergebnisse:</h3>
+    <div class="poll-result"><span>🎢 Freizeitpark</span><div class="poll-bar" id="bar-0"></div><span id="count-0"></span></div>
+    <div class="poll-result"><span>🏞 Wandern</span><div class="poll-bar" id="bar-1"></div><span id="count-1"></span></div>
+    <div class="poll-result"><span>🏊 Schwimmen</span><div class="poll-bar" id="bar-2"></div><span id="count-2"></span></div>
+  </div>
+</section>
+
 
 
 
@@ -458,7 +529,41 @@ document.getElementById("spin-btn").addEventListener("click", () => {
 });
 
   </script>
- 
+ <script>
+let votes = [0, 0, 0]; // Startwerte für jede Option
+let hasVoted = false;  // Damit jeder nur einmal abstimmen kann
+
+function vote(optionIndex) {
+  if (hasVoted) {
+    alert("Du hast schon abgestimmt!");
+    return;
+  }
+
+  votes[optionIndex]++;
+  hasVoted = true;
+
+  // Buttons ausblenden, Ergebnisse anzeigen
+  document.getElementById("poll-options").style.display = "none";
+  document.getElementById("poll-results").style.display = "block";
+
+  updateResults();
+}
+
+function updateResults() {
+  const totalVotes = votes.reduce((a, b) => a + b, 0);
+
+  votes.forEach((count, index) => {
+    const percentage = totalVotes > 0 ? (count / totalVotes) * 100 : 0;
+
+    document.getElementById(`count-${index}`).textContent = `${count} Stimmen`;
+    document.getElementById(`bar-${index}`).style.setProperty("--width", `${percentage}%`);
+    document.getElementById(`bar-${index}`).querySelector("::after");
+    document.getElementById(`bar-${index}`).style.position = "relative";
+    document.getElementById(`bar-${index}`).innerHTML = `<div style="width:${percentage}%;height:100%;background:#4caf50;border-radius:4px;"></div>`;
+  });
+}
+</script>
+
 
 </body>
 </html>
