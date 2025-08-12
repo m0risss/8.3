@@ -387,7 +387,7 @@ document.body.addEventListener("click", function() {
 });
  </script>
   <script>
-  const symbols = ["🍒", "🍋", "🍇", "🍉", "⭐", "🔔", "💎", "7️⃣"];
+ const symbols = ["🍒", "🍋", "🍇", "🍉", "⭐", "🔔", "💎", "7️⃣"];
 const reels = document.querySelectorAll(".reel");
 const resultText = document.getElementById("slot-result");
 const coinsDisplay = document.getElementById("coins");
@@ -402,33 +402,56 @@ document.getElementById("spin-btn").addEventListener("click", () => {
   }
 
   coins -= betAmount;
-  let results = [];
+  coinsDisplay.textContent = coins;
+  resultText.textContent = "🎰 Drehen...";
 
-  reels.forEach(reel => {
-    let randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
-    reel.textContent = randomSymbol;
-    results.push(randomSymbol);
+  let finalResults = [];
+  let intervals = [];
+
+  // Für jede Walze: Intervall zum schnellen wechseln der Symbole
+  reels.forEach((reel, index) => {
+    intervals[index] = setInterval(() => {
+      reel.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    }, 100);
   });
 
-  // Gewinnlogik
-  if (results[0] === "7️⃣" && results[1] === "7️⃣" && results[2] === "7️⃣") {
-    coins += 100;
-    resultText.textContent = "🎉 JACKPOT! 7️⃣7️⃣7️⃣ +100💰!";
-  } 
-  else if (results[0] === results[1] && results[1] === results[2]) {
-    coins += 50;
-    resultText.textContent = "✨ Drei gleiche! +50💰";
-  } 
-  else if (results[0] === results[1] || results[1] === results[2] || results[0] === results[2]) {
-    coins += 20;
-    resultText.textContent = "🙂 Zwei gleiche – +20💰";
-  } 
-  else {
-    resultText.textContent = "😢 Leider nix – Versuch's nochmal!";
-  }
+  // Stoppe die Walzen nacheinander
+  reels.forEach((reel, index) => {
+    setTimeout(() => {
+      clearInterval(intervals[index]);
+      // Endsymbol festlegen
+      let finalSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+      reel.textContent = finalSymbol;
+      finalResults[index] = finalSymbol;
 
-  coinsDisplay.textContent = coins;
+      // Wenn alle Walzen fertig sind, Ergebnis prüfen
+      if (finalResults.filter(s => s !== undefined).length === reels.length) {
+        checkResult(finalResults);
+      }
+    }, 1000 + index * 700); // Stoppt Walze 1 nach 1 Sek, Walze 2 nach 1.7 Sek, Walze 3 nach 2.4 Sek
+  });
+
+  function checkResult(results) {
+    if (results[0] === "7️⃣" && results[1] === "7️⃣" && results[2] === "7️⃣") {
+      coins += 100;
+      resultText.textContent = "🎉 JACKPOT! 7️⃣7️⃣7️⃣ +100💰!";
+    } else if (results[0] === results[1] && results[1] === results[2]) {
+      coins += 50;
+      resultText.textContent = "✨ Drei gleiche! +50💰";
+    } else if (
+      results[0] === results[1] ||
+      results[1] === results[2] ||
+      results[0] === results[2]
+    ) {
+      coins += 20;
+      resultText.textContent = "🙂 Zwei gleiche – +20💰";
+    } else {
+      resultText.textContent = "😢 Leider nix – Versuch's nochmal!";
+    }
+    coinsDisplay.textContent = coins;
+  }
 });
+
   </script>
 </body>
 </html>
