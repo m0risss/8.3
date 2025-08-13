@@ -342,6 +342,71 @@ button:hover {
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
+#illusions {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  background-color: #f0f0f0;
+  padding: 2rem;
+}
+
+.illusion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem;
+}
+
+.illusion p {
+  margin-top: 0.5rem;
+  font-family: sans-serif;
+  font-weight: bold;
+}
+
+/* Drehendes Rad */
+.rotating .circle {
+  width: 100px;
+  height: 100px;
+  border: 8px solid #4caf50;
+  border-top: 8px solid #fff;
+  border-radius: 50%;
+  animation: spin 2s linear infinite;
+}
+
+/* Wackelnde Linien */
+.wobble .line {
+  width: 80px;
+  height: 10px;
+  background-color: #ff5722;
+  margin: 6px 0;
+  animation: wobble 1s ease-in-out infinite alternate;
+}
+
+/* Pulsierende Kreise */
+.pulse .dot {
+  width: 30px;
+  height: 30px;
+  background-color: #2196f3;
+  border-radius: 50%;
+  margin: 5px;
+  animation: pulse 1s ease-in-out infinite alternate;
+}
+
+/* Animationen */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes wobble {
+  0% { transform: rotate(-10deg); }
+  100% { transform: rotate(10deg); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.7; }
+  100% { transform: scale(1.5); opacity: 1; }
+}
 
   </style>
 </head>
@@ -412,6 +477,26 @@ button:hover {
   <p id="slot-result"></p>
 </div>
   <div id="schule-karte"></div>
+<section id="illusions">
+  <div class="illusion rotating">
+    <div class="circle"></div>
+    <p>Drehendes Rad</p>
+  </div>
+
+  <div class="illusion wobble">
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+    <p>Wackelnde Linien</p>
+  </div>
+
+  <div class="illusion pulse">
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <p>Pulsierende Kreise</p>
+  </div>
+</section>
 
 <div id="ssp-game" style="font-family: Arial, sans-serif; max-width: 350px; margin: 20px auto; padding: 15px; border: 2px solid #0f0; border-radius: 8px; background: #111; color: #0f0;">
   <h3 style="text-align: center;">🎯 Schere – Stein – Papier</h3>
