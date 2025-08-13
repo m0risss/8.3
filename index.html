@@ -333,6 +333,15 @@ button:hover {
   font-weight: 600;
   color: #e03e3e;
 }
+#schule-karte {
+    width: 100%;
+    max-width: 600px;
+    height: 400px;
+    margin: 20px auto;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
 
   </style>
 </head>
@@ -402,6 +411,8 @@ button:hover {
   <button id="spin-btn">SPIN! (10💰)</button>
   <p id="slot-result"></p>
 </div>
+  <div id="schule-karte"></div>
+
 <div id="ssp-game" style="font-family: Arial, sans-serif; max-width: 350px; margin: 20px auto; padding: 15px; border: 2px solid #0f0; border-radius: 8px; background: #111; color: #0f0;">
   <h3 style="text-align: center;">🎯 Schere – Stein – Papier</h3>
   <p>Punkte: <span id="ssp-punkte">0</span></p>
@@ -896,5 +907,26 @@ document.getElementById("spin-btn").addEventListener("click", () => {
   startBtn.addEventListener("click", startGame);
 })();
 </script>
+  <!-- Leaflet CSS + JS einbinden -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+    // Karte erstellen
+    var map = L.map('schule-karte').setView([51.3174, 12.3928], 16); // Koordinaten vom Wilhelm-Ostwald-Gymnasium
+
+    // OpenStreetMap Tiles hinzufügen
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap-Mitwirkende'
+    }).addTo(map);
+
+    // Marker setzen
+    L.marker([51.3174, 12.3928])
+        .addTo(map)
+        .bindPopup("<b>Wilhelm-Ostwald-Gymnasium</b><br>Leipzig")
+        .openPopup();
+</script>
+
 </body>
 </html>
